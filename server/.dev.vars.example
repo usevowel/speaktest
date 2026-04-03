@@ -1,0 +1,5 @@
+DEEPGRAM_API_KEY = ""
+GROQ_API_KEY = ""
+STT_SUFFIX = "audio/transcriptions"
+TTS_SUFFIX = "audio/speech"
+PORT = "8316"

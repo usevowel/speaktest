@@ -1,0 +1,9 @@
+{
+  "name": "@vowel/tester-shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.ts",
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}

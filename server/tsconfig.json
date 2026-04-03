@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "outDir": "./dist",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "types": ["@cloudflare/workers-types"],
+    "lib": ["ES2022"]
+  },
+  "include": ["src/**/*", "../shared/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/routes/**/*",
+    "src/services/fileSystem.ts",
+    "src/services/translation.ts",
+    "src/services/translation-cache.ts",
+    "src/services/tts-cache.ts",
+    "src/server.ts"
+  ]
+}

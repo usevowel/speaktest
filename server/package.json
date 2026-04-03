@@ -1,0 +1,22 @@
+{
+  "name": "@vowel/tester-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --env development --remote",
+    "dev:local": "wrangler dev --local --env development",
+    "build": "tsc",
+    "deploy": "cd ../client && bun run build && cd ../server && wrangler deploy --env production",
+    "deploy:dev": "cd ../client && bun run build && cd ../server && wrangler deploy --env development"
+  },
+  "dependencies": {
+    "@ai-sdk/groq": "^3.0.10",
+    "ai": "^6.0.39"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241106.0",
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3",
+    "wrangler": "^4.59.3"
+  }
+}

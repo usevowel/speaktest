@@ -1,0 +1,33 @@
+{
+  "name": "@vowel/tester",
+  "version": "1.0.0",
+  "description": "Test helper for vowel.to realtime, conversational voice assistant",
+  "scripts": {
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+    "dev:server": "cd server && wrangler dev",
+    "dev:client": "cd client && bun run dev",
+    "build": "bun run build:client && bun run build:server",
+    "build:client": "cd client && bun run build",
+    "build:server": "cd server && bun run build",
+    "deploy": "bun run build:client && cd server && wrangler deploy --env production",
+    "deploy:dev": "bun run build:client && cd server && wrangler deploy --env development",
+    "cf": "./scripts/cf-wrapper.sh"
+  },
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "http-proxy": "^1.18.1",
+    "js-yaml": "^4.1.0",
+    "qrcode": "^1.5.4",
+    "tsx": "^4.20.6",
+    "@types/http-proxy": "^1.17.15",
+    "@types/js-yaml": "^4.0.9",
+    "@types/qrcode": "^1.5.5"
+  },
+  "dependencies": {}
+}

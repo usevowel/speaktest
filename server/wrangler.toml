@@ -1,0 +1,50 @@
+name = "speaktest-server"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+build = { command = "bun install && bun run build" }
+account_id = "84882f590c2154079d59fbaef6fb382b"
+compatibility_flags = [ "nodejs_compat" ]
+
+# Default environment (used when no --env flag is specified)
+assets = { directory = "../client-dist" }
+
+[[r2_buckets]]
+binding = "STORAGE"
+bucket_name = "speaktest"
+
+[vars]
+NODE_ENV = "development"
+CLIENT_URL = "http://localhost:8080"
+
+[env.production]
+build = { command = "cd .. && bun run build:client && cd server && bun run build" }
+name = "speaktest-server"
+routes = [
+  { pattern = "speaktest.vowel.to", custom_domain = true }
+]
+assets = { directory = "../client-dist" }
+
+[[env.production.r2_buckets]]
+binding = "STORAGE"
+bucket_name = "speaktest"
+
+[env.production.vars]
+GROQ_API_KEY = ""
+DEEPGRAM_API_KEY = ""
+STT_SUFFIX = "audio/transcriptions"
+TTS_SUFFIX = "audio/speech"
+PORT = "8316"
+NODE_ENV = "production"
+
+[env.development]
+name = "speaktest-server-dev"
+assets = { directory = "../client-dist" }
+
+[[env.development.r2_buckets]]
+binding = "STORAGE"
+bucket_name = "speaktest-dev"
+preview_bucket_name = "speaktest-dev"
+
+[env.development.vars]
+NODE_ENV = "development"
+CLIENT_URL = "http://localhost:8080"
