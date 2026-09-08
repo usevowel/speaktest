@@ -14,7 +14,7 @@ import { useTalkerStore } from '@/stores/talkerStore';
 import { useListenerStore } from '@/stores/listenerStore';
 import { TTS_LANGUAGE_MAPPINGS, SOURCE_LANGUAGES, TTS_VOICES, DEFAULT_VOICE_BY_LANGUAGE, ASSEMBLYAI_STT_STREAMING_LANGUAGES, TTS_TO_TRANSLATION_LANGUAGE } from '@/constants';
 import { ttsApi } from '@/lib/api';
-import { parseVoiceName, filterVoicesByLanguage, getVoiceDisplayLabel, extractVoiceLanguage } from '@/lib/voice-utils';
+import { parseVoiceName, filterVoicesByLanguage, getVoiceDisplayLabel, extractVoiceLanguage, isFishVoice } from '@/lib/voice-utils';
 import type { TTSLanguage } from '@/shared/types';
 
 /**
@@ -70,7 +70,7 @@ export function SettingsTab() {
           // If current voice is not valid for this language, switch to default
           const voiceLangCode = extractVoiceLanguage(voice);
           const targetLangCode = getLanguageCodeForVoiceFilter(targetLanguage);
-          if (voiceLangCode !== targetLangCode) {
+          if (!isFishVoice(voice) && voiceLangCode !== targetLangCode) {
             const defaultVoice = DEFAULT_VOICE_BY_LANGUAGE[targetLanguage];
             if (defaultVoice && filteredVoices.includes(defaultVoice)) {
               setVoice(defaultVoice);

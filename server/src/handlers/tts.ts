@@ -5,7 +5,7 @@
 import type { Request } from '@cloudflare/workers-types';
 import type { Env } from '../types';
 import type { TTSRequest } from '../../../shared/types';
-import { textToSpeech, getSupportedVoices, isDeepgramTTSAvailable } from '../services/deepgram-workers';
+import { textToSpeech, getSupportedVoices, isFishTTSAvailable } from '../services/fish-audio-workers';
 import { getCacheStats, clearTTSCache } from '../services/tts-cache-r2';
 import { handleCORS, addCORSHeaders } from '../utils/cors';
 import { jsonResponse, errorResponse } from '../utils/response';
@@ -30,9 +30,9 @@ export async function handleTTS(request: Request, env: Env): Promise<Response> {
   // POST /api/tts - Convert text to speech
   if (request.method === 'POST' && url.pathname === '/api/tts') {
     try {
-      if (!isDeepgramTTSAvailable(env)) {
+      if (!isFishTTSAvailable(env)) {
         return addCORSHeaders(
-          errorResponse('TTS service unavailable', 'Deepgram API credentials not configured', 503),
+          errorResponse('TTS service unavailable', 'Fish Audio API credentials not configured', 503),
           request,
           env
         );
@@ -66,26 +66,10 @@ export async function handleTTS(request: Request, env: Env): Promise<Response> {
         speed
       });
 
-      // Validate voice is valid for the language
-      let validatedVoice = voice;
-      if (voice) {
-        try {
-          const availableVoices = await getSupportedVoices(env);
-          if (!availableVoices.includes(voice)) {
-            console.warn(`⚠️ Voice "${voice}" not found in available voices for "${language}", using first available: ${availableVoices[0]}`);
-            validatedVoice = availableVoices[0] || voice;
-          } else {
-            console.log(`✅ Voice "${voice}" validated for language "${language}"`);
-          }
-        } catch (error) {
-          console.warn('Failed to validate voice, proceeding with requested voice:', error);
-        }
-      }
-
       const ttsRequest: TTSRequest = {
         text: trimmedText,
         language,
-        voice: validatedVoice,
+        voice,
         speed,
       };
 
@@ -113,9 +97,9 @@ export async function handleTTS(request: Request, env: Env): Promise<Response> {
   // GET /api/tts/voices/:language - Get supported voices
   if (request.method === 'GET' && url.pathname.startsWith('/api/tts/voices/')) {
     try {
-      if (!isDeepgramTTSAvailable(env)) {
+      if (!isFishTTSAvailable(env)) {
         return addCORSHeaders(
-          errorResponse('TTS service unavailable', 'Deepgram API credentials not configured', 503),
+          errorResponse('TTS service unavailable', 'Fish Audio API credentials not configured', 503),
           request,
           env
         );
@@ -167,7 +151,7 @@ export async function handleTTS(request: Request, env: Env): Promise<Response> {
 
   // GET /api/tts/status - Check TTS service status
   if (request.method === 'GET' && url.pathname === '/api/tts/status') {
-    const available = isDeepgramTTSAvailable(env);
+    const available = isFishTTSAvailable(env);
 
     return addCORSHeaders(
       jsonResponse(

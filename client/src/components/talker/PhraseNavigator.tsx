@@ -29,7 +29,7 @@ import { useTalkerActions } from '@/hooks/useTalkerActions';
 import { TTS_VOICES, DEFAULT_VOICE_BY_LANGUAGE } from '@/constants';
 import { ttsApi } from '@/lib/api';
 import { keyboard } from '@/lib/utils';
-import { parseVoiceName, filterVoicesByLanguage, getVoiceDisplayLabel, extractVoiceLanguage } from '@/lib/voice-utils';
+import { parseVoiceName, filterVoicesByLanguage, getVoiceDisplayLabel, extractVoiceLanguage, isFishVoice } from '@/lib/voice-utils';
 
 /**
  * Maps TTS language codes to voice language codes for comparison
@@ -88,7 +88,7 @@ export function PhraseNavigator() {
           // If current voice is not valid for this language, switch to default
           const voiceLangCode = extractVoiceLanguage(voice);
           const targetLangCode = getLanguageCodeForVoiceFilter(targetLanguage);
-          if (voiceLangCode !== targetLangCode) {
+          if (!isFishVoice(voice) && voiceLangCode !== targetLangCode) {
             const defaultVoice = DEFAULT_VOICE_BY_LANGUAGE[targetLanguage];
             if (defaultVoice && filteredVoices.includes(defaultVoice)) {
               setVoice(defaultVoice);

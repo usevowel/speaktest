@@ -28,6 +28,8 @@
     "src/services/translation.ts",
     "src/services/translation-cache.ts",
     "src/services/tts-cache.ts",
+    "src/services/deepgram.ts",
+    "src/services/stt-express.ts",
     "src/server.ts"
   ]
 }

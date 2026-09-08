@@ -15,13 +15,14 @@ import type { R2Bucket } from '@cloudflare/workers-types';
  * @param request - TTS request parameters
  * @returns SHA-256 hash string as cache key
  */
-export async function generateCacheKey(request: TTSRequest): Promise<string> {
+export async function generateCacheKey(request: TTSRequest, provider = 'legacy'): Promise<string> {
   // Normalize the request to ensure consistent hashing
   const normalized = {
     text: request.text.trim(),
     language: request.language.toLowerCase(),
     voice: request.voice?.toLowerCase() || 'default',
     speed: request.speed || 1.0,
+    provider,
   };
   
   // Create a deterministic string representation
@@ -46,9 +47,10 @@ export async function generateCacheKey(request: TTSRequest): Promise<string> {
  */
 export async function getCachedTTS(
   request: TTSRequest,
-  bucket: R2Bucket
+  bucket: R2Bucket,
+  provider?: string,
 ): Promise<TTSResponse | undefined> {
-  const cacheKey = await generateCacheKey(request);
+  const cacheKey = await generateCacheKey(request, provider);
   const objectKey = `tts-cache/${cacheKey}.txt`;
   
   try {
@@ -83,9 +85,10 @@ export async function getCachedTTS(
 export async function cacheTTS(
   request: TTSRequest,
   response: TTSResponse,
-  bucket: R2Bucket
+  bucket: R2Bucket,
+  provider?: string,
 ): Promise<void> {
-  const cacheKey = await generateCacheKey(request);
+  const cacheKey = await generateCacheKey(request, provider);
   const objectKey = `tts-cache/${cacheKey}.txt`;
   
   try {

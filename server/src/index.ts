@@ -19,7 +19,7 @@ export default {
     // Log incoming requests (only in development or for API routes)
     if (env.NODE_ENV === 'development' || url.pathname.startsWith('/api/')) {
       console.log(`🌐 [${request.method}] ${url.pathname}`);
-      console.log('🌐 [env] Available bindings:', Object.keys(env).filter(key => key !== 'GROQ_API_KEY' && key !== 'DEEPGRAM_API_KEY'));
+      console.log('🌐 [env] Available bindings:', Object.keys(env).filter(key => !['GROQ_API_KEY', 'DEEPGRAM_API_KEY', 'FISH_AUDIO_API_TOKEN'].includes(key)));
       console.log('🌐 [env] STORAGE exists:', !!env.STORAGE);
     }
     

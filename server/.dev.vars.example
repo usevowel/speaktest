@@ -1,4 +1,7 @@
 DEEPGRAM_API_KEY = ""
+FISH_AUDIO_API_TOKEN = ""
+FISH_AUDIO_TTS_MODEL = "s2.1-pro-free"
+FISH_AUDIO_TTS_LATENCY = "balanced"
 GROQ_API_KEY = ""
 STT_SUFFIX = "audio/transcriptions"
 TTS_SUFFIX = "audio/speech"

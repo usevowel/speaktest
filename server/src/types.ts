@@ -18,4 +18,7 @@ export interface Env {
   // Secrets (set via wrangler secret put)
   GROQ_API_KEY?: string;
   DEEPGRAM_API_KEY?: string;
+  FISH_AUDIO_API_TOKEN?: string;
+  FISH_AUDIO_TTS_MODEL?: string;
+  FISH_AUDIO_TTS_LATENCY?: string;
 }

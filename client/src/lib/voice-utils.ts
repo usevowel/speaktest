@@ -1,5 +1,5 @@
 /**
- * Voice utility functions for parsing and filtering Deepgram voice IDs
+ * Voice utility functions for parsing and filtering provider voice IDs.
  */
 
 /**
@@ -28,6 +28,10 @@ export function parseVoiceName(voiceId: string): string {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
+  if (voiceId.startsWith('fish:')) {
+    return 'Fish voice';
+  }
+
   // Fallback: if pattern doesn't match, return the original
   return voiceId;
 }
@@ -48,6 +52,11 @@ export function extractVoiceLanguage(voiceId: string): string | null {
 
   const match = voiceId.match(/^aura(?:-2)?-[a-z]+-([a-z]{2})$/);
   return match ? match[1] : null;
+}
+
+/** Whether a voice ID is a Fish Audio catalog model. */
+export function isFishVoice(voiceId: string | undefined): boolean {
+  return Boolean(voiceId?.startsWith('fish:'));
 }
 
 /**
@@ -95,11 +104,15 @@ export function filterVoicesByLanguage(voices: string[], language: string): stri
     return voices;
   }
 
-  return voices.filter(voiceId => {
+  const languageVoices = voices.filter(voiceId => {
     const voiceLangCode = extractVoiceLanguage(voiceId);
     // Match voice language code to target language code
     return voiceLangCode === targetLangCode;
   });
+
+  // Fish catalog models do not carry a language suffix. Keep them selectable
+  // for every target language rather than showing an empty voice menu.
+  return languageVoices.length > 0 ? languageVoices : voices.filter(isFishVoice);
 }
 
 /**
