@@ -190,3 +190,6 @@ server/translation-cache/
 
 # Cursor IDE files
 .cursor/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
